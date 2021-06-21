@@ -43,9 +43,10 @@ class TweetDfExtractor:
 
     def find_full_text(self)->list:
         try:
-            text = [tweet['full_text'] for tweet in self.tweets_list]
-        except KeyError:
-            text = None
+            # text = [tweet['full_text'] if 'full_text' in tweet else None for tweet in self.tweets_list]
+            text = [tweet['extended_tweet']['full_text'] if 'extended_tweet' in tweet else '' for tweet in self.tweets_list]
+        except TypeError:
+            text = ''
         return text
 
     # def find_sentiments(self, text)->list:
@@ -62,7 +63,7 @@ class TweetDfExtractor:
         return source
 
     def find_screen_name(self)->list:
-        screen_name = [tweet['screen_name'] for tweet in self.tweets_list]
+        screen_name = [tweet['screen_name'] if 'screen_name' in tweet else " "for tweet in self.tweets_list]
         return screen_name
     def find_followers_count(self)->list:
         followers_count = [tweet['followers_count'] for tweet in self.tweets_list]
