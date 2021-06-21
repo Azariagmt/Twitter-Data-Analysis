@@ -88,7 +88,7 @@ class TweetDfExtractor:
 
     def find_favourite_count(self) -> list:
         try:
-            favorites_count = [x['user']['favorites_count']
+            favorites_count = [x['user']['favourites_count'] if 'user' in x else ''
                                for x in self.tweets_list]
         except KeyError:
             favorites_count = ''
@@ -131,7 +131,7 @@ class TweetDfExtractor:
         # columns = ['created_at', 'source', 'original_text', 'polarity', 'subjectivity', 'lang', 'favorite_count', 'retweet_count',
         #            'original_author', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place']
 
-        columns = ['created_at', 'source', 'text', 'lang', 'retweet_count',
+        columns = ['created_at', 'source', 'text', 'lang', 'fav_count', 'retweet_count',
                    'original_author', 'followers_count', 'friends_count']
 
         created_at = self.find_created_time()
@@ -155,7 +155,7 @@ class TweetDfExtractor:
         # fav_count, sensitivity, location removes
         # data = zip(created_at, source, text, lang, fav_count, retweet_count,
         #            screen_name, follower_count, friends_count, sensitivity, location)
-        data = zip(created_at, source, text, lang, retweet_count,
+        data = zip(created_at, source, text, lang,fav_count, retweet_count,
                    screen_name, follower_count, friends_count)
         print("DATA CREATED")
         # print(data[0])
