@@ -44,8 +44,8 @@ class TweetDfExtractor:
     def find_full_text(self) -> list:
         try:
             # text = [tweet['full_text'] if 'full_text' in tweet else None for tweet in self.tweets_list]
-            text = [tweet['extended_tweet']['full_text']
-                    if 'extended_tweet' in tweet else '' for tweet in self.tweets_list]
+            text = [tweet['retweeted_status']['extended_tweet']['full_text']
+                    if ('retweeted_status' in tweet and 'extended_tweet' in tweet['retweeted_status']) else '' for tweet in self.tweets_list]
         except TypeError:
             text = ''
         return text
