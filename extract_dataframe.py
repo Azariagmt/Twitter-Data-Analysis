@@ -38,8 +38,8 @@ class TweetDfExtractor:
     # an example function
     def find_statuses_count(self) -> list:
         # self.statuses_count = self.tweets_list.statuses_count
-        print(self.tweets_list[100])
-        return [tweet['statuses_count'] for tweet in self.tweets_list]
+        # print(self.tweets_list[100])
+        return [tweet['user']['statuses_count'] if 'user' in tweet else '' for tweet in self.tweets_list]
 
     def find_full_text(self) -> list:
         try:
@@ -88,8 +88,9 @@ class TweetDfExtractor:
 
     def is_sensitive(self) -> list:
         is_sensitive = [x['retweeted_status']['possibly_sensitive'] if ('retweeted_status'
-                        in x) and ('possibly_sensitive' in x['retweeted_status']) else '' for x in self.tweets_list]
-
+                        in x) and ('possibly_sensitive' in x['retweeted_status']) else None for x in self.tweets_list]
+        is_sensitive = [
+            None if sensitivity is False else sensitivity for sensitivity in is_sensitive]
         return is_sensitive
 
     def find_favourite_count(self) -> list:
