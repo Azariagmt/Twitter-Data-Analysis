@@ -42,7 +42,10 @@ class TweetDfExtractor:
         return [tweet['statuses_count'] for tweet in self.tweets_list]
 
     def find_full_text(self)->list:
-        text = [tweet['full_text'] for tweet in self.tweets_list]
+        try:
+            text = [tweet['full_text'] for tweet in self.tweets_list]
+        except KeyError:
+            text = None
         return text
 
     # def find_sentiments(self, text)->list:
@@ -69,68 +72,86 @@ class TweetDfExtractor:
         friends_count = [tweet['friends_count'] for tweet in self.tweets_list]
         return friends_count
 
-    # def is_sensitive(self)->list:
-    #     try:
-    #         is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
-    #     except KeyError:
-    #         is_sensitive = None
+    def is_sensitive(self)->list:
+        try:
+            is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
+        except KeyError:
+            is_sensitive = None
 
-    #     return is_sensitive
+        return is_sensitive
 
-    # def find_favourite_count(self)->list:
+    def find_favourite_count(self)->list:
+        try:
+            favorites_count = [x['favorites_count'] for x in self.tweets_list]
+        except KeyError:
+            favorites_count = None
 
-    # def find_retweet_count(self)->list:
-    #     retweet_count =
+        return favorites_count
 
-    # def find_hashtags(self)->list:
-    #     hashtags =
+    def find_retweet_count(self)->list:
+        retweet_count =  [x['retweet_count'] for x in self.tweets_list]
+        return retweet_count
 
-    # def find_mentions(self)->list:
-    #     mentions =
+    def find_hashtags(self)->list:
+        hashtags =  [x['hashtags'] for x in self.tweets_list]
+        return hashtags
 
-    # def find_location(self)->list:
-    #     try:
-    #         location = self.tweets_list['user']['location']
-    #     except TypeError:
-    #         location = ''
+    def find_mentions(self)->list:
+        mentions =  [x['mentions'] for x in self.tweets_list]
+        return mentions
 
-    #     return location
+    def find_location(self)->list:
+        try:
+            location = self.tweets_list['user']['location']
+        except TypeError:
+            location = ''
 
-    # def get_tweet_df(self, save=False)->pd.DataFrame:
-    #     """required column to be generated you should be creative and add more features"""
+        return location
 
-    #     columns = ['created_at', 'source', 'original_text','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count',
-    #         'original_author', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place']
+    def find_lang(self)->list:
+        try:
+            lang = [x['lang'] for x in self.tweets_list]
+        except TypeError:
+            lang = ''
+        print(type(lang))
+        print(lang)
+        return lang
 
-    #     created_at = self.find_created_time()
-    #     source = self.find_source()
-    #     text = self.find_full_text()
-    #     polarity, subjectivity = self.find_sentiments(text)
-    #     lang = self.find_lang()
-    #     fav_count = self.find_favourite_count()
-    #     retweet_count = self.find_retweet_count()
-    #     screen_name = self.find_screen_name()
-    #     follower_count = self.find_followers_count()
-    #     friends_count = self.find_friends_count()
-    #     sensitivity = self.is_sensitive()
-    #     hashtags = self.find_hashtags()
-    #     mentions = self.find_mentions()
-    #     location = self.find_location()
-    #     data = zip(created_at, source, text, polarity, subjectivity, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
-    #     df = pd.DataFrame(data=data, columns=columns)
+    def get_tweet_df(self, save=False)->pd.DataFrame:
+        """required column to be generated you should be creative and add more features"""
 
-    #     if save:
-    #         df.to_csv('processed_tweet_data.csv', index=False)
-    #         print('File Successfully Saved.!!!')
+        columns = ['created_at', 'source', 'original_text','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count',
+            'original_author', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place']
 
-    #     return df
+        created_at = self.find_created_time()
+        source = self.find_source()
+        text = self.find_full_text()
+        # polarity, subjectivity = self.find_sentiments(text)
+        lang = self.find_lang()
+        fav_count = self.find_favourite_count()
+        retweet_count = self.find_retweet_count()
+        screen_name = self.find_screen_name()
+        follower_count = self.find_followers_count()
+        friends_count = self.find_friends_count()
+        sensitivity = self.is_sensitive()
+        hashtags = self.find_hashtags()
+        mentions = self.find_mentions()
+        location = self.find_location()
+        data = zip(created_at, source, text, polarity, subjectivity, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
+        df = pd.DataFrame(data=data, columns=columns)
+
+        if save:
+            df.to_csv('processed_tweet_data.csv', index=False)
+            print('File Successfully Saved.!!!')
+
+        return df
 if __name__ == "__main__":
     # required column to be generated you should be creative and add more features
     columns = ['created_at', 'source', 'original_text', 'clean_text', 'sentiment', 'polarity', 'subjectivity', 'lang', 'favorite_count', 'retweet_count',
                'original_author', 'screen_count', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'place_coord_boundaries']
     _, tweet_list = read_json("./data/covid19.json")
     tweet = TweetDfExtractor(tweet_list)
-    # tweet_df = tweet.get_tweet_df()
-    tweet.find_created_time()
+    tweet_df = tweet.get_tweet_df()
+    # tweet.find_created_time()
 
     # use all defined functions to generate a dataframe with the specified columns above
