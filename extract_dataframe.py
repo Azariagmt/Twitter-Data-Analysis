@@ -50,9 +50,17 @@ class TweetDfExtractor:
             text = ''
         return text
 
-    # def find_sentiments(self, text)->list:
+    def find_sentiments(self, text) -> list:
+        polarity = []
+        subjectivity = []
 
-    #     return polarity, self.subjectivity
+        for each in text:
+            if (each):
+                result = TextBlob(str(each)).sentiment
+                polarity.append(result.polarity)
+                subjectivity.append(result.subjectivity)
+
+        return polarity, subjectivity
 
     def find_created_time(self) -> list:
         # print([tweet['created_at'] for tweet in self.tweets_list])
@@ -130,13 +138,13 @@ class TweetDfExtractor:
         # columns = ['created_at', 'source', 'original_text', 'polarity', 'subjectivity', 'lang', 'favorite_count', 'retweet_count',
         #            'original_author', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place']
 
-        columns = ['created_at', 'source', 'original_text', 'lang', 'favorite_count', 'retweet_count',
+        columns = ['created_at', 'source', 'polarity', 'subjectivity', 'original_text', 'lang', 'favorite_count', 'retweet_count',
                    'original_author', 'followers_count', 'friends_count',  'possibly_sensitive', 'hashtags', 'user_mentions', 'location']
 
         created_at = self.find_created_time()
         source = self.find_source()
         text = self.find_full_text()
-        # polarity, subjectivity = self.find_sentiments(text)
+        polarity, subjectivity = self.find_sentiments(text)
         lang = self.find_lang()
         fav_count = self.find_favourite_count()
         retweet_count = self.find_retweet_count()
@@ -152,9 +160,9 @@ class TweetDfExtractor:
         print("About to zip")
         print("Sen LENGTH", len(sensitivity))
         # fav_count, sensitivity, location removes
-        # data = zip(created_at, source, text, lang, fav_count, retweet_count,
+        # data = zip(created_at, source,  text, lang, fav_count, retweet_count,
         #            screen_name, follower_count, friends_count, sensitivity, location)
-        data = zip(created_at, source, text, lang, fav_count, retweet_count,
+        data = zip(created_at, source, polarity, subjectivity, text, lang, fav_count, retweet_count,
                    screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
         print("DATA CREATED")
         print(data)
