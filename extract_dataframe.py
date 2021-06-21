@@ -99,9 +99,8 @@ class TweetDfExtractor:
         return retweet_count
 
     def find_hashtags(self) -> list:
-        hashtags = [x['retweeted_status']['extended_tweet']['entities']['hashtags'] if 'retweeted_status'
-                    in x else '' for x in self.tweets_list]
-        print(hashtags)
+        hashtags = [x['retweeted_status']['extended_tweet']['entities']['hashtags'] if ('retweeted_status'
+                    in x) and ('extended_tweet' in x['retweeted_status']) else '' for x in self.tweets_list]
         return hashtags
 
     # def find_mentions(self)->list:
@@ -131,7 +130,7 @@ class TweetDfExtractor:
         #            'original_author', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place']
 
         columns = ['created_at', 'source', 'text', 'lang', 'fav_count', 'retweet_count',
-                   'original_author', 'followers_count', 'friends_count',  'possibly_sensitive','location']
+                   'original_author', 'followers_count', 'friends_count',  'possibly_sensitive','hashtags','location']
 
         created_at = self.find_created_time()
         source = self.find_source()
@@ -144,7 +143,7 @@ class TweetDfExtractor:
         follower_count = self.find_followers_count()
         friends_count = self.find_friends_count()
         sensitivity = self.is_sensitive()
-        # hashtags = self.find_hashtags()
+        hashtags = self.find_hashtags()
         # mentions = self.find_mentions()
         location = self.find_location()
         # zip removal of
@@ -155,7 +154,7 @@ class TweetDfExtractor:
         # data = zip(created_at, source, text, lang, fav_count, retweet_count,
         #            screen_name, follower_count, friends_count, sensitivity, location)
         data = zip(created_at, source, text, lang, fav_count, retweet_count,
-                   screen_name, follower_count, friends_count, sensitivity,location)
+                   screen_name, follower_count, friends_count, sensitivity,hashtags,location)
         print("DATA CREATED")
         print(data)
         data = tuple(data)
