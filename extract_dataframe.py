@@ -112,7 +112,7 @@ class TweetDfExtractor:
 
     def find_location(self) -> list:
         try:
-            location = self.tweets_list['user']['location']
+            location = [tweet['user']['location'] if tweet['user'] else "" for tweet in self.tweets_list]
         except TypeError:
             location = ''
 
@@ -132,7 +132,7 @@ class TweetDfExtractor:
         #            'original_author', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place']
 
         columns = ['created_at', 'source', 'text', 'lang', 'fav_count', 'retweet_count',
-                   'original_author', 'followers_count', 'friends_count']
+                   'original_author', 'followers_count', 'friends_count', 'location']
 
         created_at = self.find_created_time()
         source = self.find_source()
@@ -156,7 +156,7 @@ class TweetDfExtractor:
         # data = zip(created_at, source, text, lang, fav_count, retweet_count,
         #            screen_name, follower_count, friends_count, sensitivity, location)
         data = zip(created_at, source, text, lang,fav_count, retweet_count,
-                   screen_name, follower_count, friends_count)
+                   screen_name, follower_count, friends_count, location)
         print("DATA CREATED")
         # print(data[0])
         print(data)
