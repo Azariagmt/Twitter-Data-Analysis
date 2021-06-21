@@ -69,8 +69,8 @@ class TweetDfExtractor:
         return screen_name
 
     def find_followers_count(self) -> list:
-        followers_count = [tweet['followers_count']
-                           if 'followers_count' in tweet else ' ' for tweet in self.tweets_list]
+        followers_count = [tweet['user']['followers_count']
+                           if 'user' in tweet else ' ' for tweet in self.tweets_list]
         return followers_count
 
     def find_friends_count(self) -> list:
@@ -88,7 +88,8 @@ class TweetDfExtractor:
 
     def find_favourite_count(self) -> list:
         try:
-            favorites_count = [x['user']['favorites_count'] for x in self.tweets_list]
+            favorites_count = [x['user']['favorites_count']
+                               for x in self.tweets_list]
         except KeyError:
             favorites_count = ''
 
@@ -96,12 +97,12 @@ class TweetDfExtractor:
 
     def find_retweet_count(self) -> list:
         retweet_count = [x['retweeted_status']['retweet_count'] if 'retweeted_status'
-                        in x else '' for x in self.tweets_list]
+                         in x else '' for x in self.tweets_list]
         return retweet_count
 
     def find_hashtags(self) -> list:
-        hashtags = [x['extended_tweet']['entities']['hashtags']
-                    if 'hashtags' in tweet['extended_tweet']['entities'] else '' for x in self.tweets_list]
+        hashtags = [x['retweeted_status']['extended_tweet']['entities']['hashtags'] if 'retweeted_status'
+                    in x else '' for x in self.tweets_list]
         print(hashtags)
         return hashtags
 
@@ -152,13 +153,14 @@ class TweetDfExtractor:
         print("About to zip")
         print("TEXT LENGTH", len(text))
         # fav_count, sensitivity, location removes
+        # data = zip(created_at, source, text, lang, fav_count, retweet_count,
+        #            screen_name, follower_count, friends_count, sensitivity, location)
         data = zip(created_at, source, text, lang, retweet_count,
                    screen_name, follower_count, friends_count)
         print("DATA CREATED")
         # print(data[0])
         print(data)
         data = tuple(data)
-        print(data[0])
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
