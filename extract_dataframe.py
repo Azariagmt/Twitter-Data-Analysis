@@ -94,7 +94,7 @@ class TweetDfExtractor:
 
     def find_favourite_count(self) -> list:
         try:
-            favorites_count = [x['user']['favourites_count'] if 'user' in x else ''
+            favorites_count = [x['retweeted_status']['favorite_count'] if 'retweeted_status' in x else ''
                                for x in self.tweets_list]
         except KeyError:
             favorites_count = ''
