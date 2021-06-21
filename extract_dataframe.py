@@ -79,10 +79,8 @@ class TweetDfExtractor:
         return friends_count
 
     def is_sensitive(self) -> list:
-        try:
-            is_sensitive = [x['possibly_sensitive'] for x in self.tweets_list]
-        except KeyError:
-            is_sensitive = ''
+        is_sensitive = [x['retweeted_status']['possibly_sensitive'] if ('retweeted_status'
+                        in x) and('possibly_sensitive' in x['retweeted_status'])  else '' for x in self.tweets_list]
 
         return is_sensitive
 
@@ -112,7 +110,8 @@ class TweetDfExtractor:
 
     def find_location(self) -> list:
         try:
-            location = [tweet['user']['location'] if tweet['user'] else "" for tweet in self.tweets_list]
+            location = [tweet['user']['location'] if tweet['user']
+                        else "" for tweet in self.tweets_list]
         except TypeError:
             location = ''
 
@@ -132,7 +131,7 @@ class TweetDfExtractor:
         #            'original_author', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place']
 
         columns = ['created_at', 'source', 'text', 'lang', 'fav_count', 'retweet_count',
-                   'original_author', 'followers_count', 'friends_count', 'location']
+                   'original_author', 'followers_count', 'friends_count',  'possibly_sensitive','location']
 
         created_at = self.find_created_time()
         source = self.find_source()
@@ -151,14 +150,13 @@ class TweetDfExtractor:
         # zip removal of
         # TODO add polarity subjectivity hashtags mentions
         print("About to zip")
-        print("TEXT LENGTH", len(text))
+        print("Sen LENGTH", len(sensitivity))
         # fav_count, sensitivity, location removes
         # data = zip(created_at, source, text, lang, fav_count, retweet_count,
         #            screen_name, follower_count, friends_count, sensitivity, location)
-        data = zip(created_at, source, text, lang,fav_count, retweet_count,
-                   screen_name, follower_count, friends_count, location)
+        data = zip(created_at, source, text, lang, fav_count, retweet_count,
+                   screen_name, follower_count, friends_count, sensitivity,location)
         print("DATA CREATED")
-        # print(data[0])
         print(data)
         data = tuple(data)
         df = pd.DataFrame(data=data, columns=columns)
