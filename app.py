@@ -2,9 +2,10 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def home():
-    return "Home Page"
+    return render_template('index.html')
 
 
 @app.route("/users")
@@ -14,7 +15,7 @@ def users():
 
 @app.route("/tweet-sentiments")
 def sentiments():
-    return "Sentiments Page"
+    return render_template('sentiments.html')
 
 
 if __name__ == "__main__":
