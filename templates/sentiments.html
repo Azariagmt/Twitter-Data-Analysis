@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitter sentiment analysis</title>
-    <!-- <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script> -->
-    <script src="https://cdn.plot.ly/plotly-2.1.0.min.js"></script>
-    <!-- Load our React component. -->
-    <!-- <script src="../static/like_button.js" defer async></script> -->
+{% block content %}
 
-</head>
+<!-- Load our React component. -->
+<!-- <script src="../static/like_button.js" defer async></script> -->
 
-<body>
-    <h1>Sentiments Page</h1>
-    <div id="myDiv"></div>
-</body>
+
+<h1>Sentiments Page</h1>
+<div id="myDiv" class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="barCol"></div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="pieCol"></div>
+    </div>
+</div>
 <script defer>
 
     var data = [
@@ -31,7 +23,38 @@
         }
     ];
 
-    Plotly.newPlot('myDiv', data);
+    Plotly.newPlot('barCol', data);
+
+    var data = [{
+        values: [366, 2786, 568],
+        labels: ['neutral', 'positive', 'negative'],
+        domain: { column: 0 },
+        name: 'GHG Emissions',
+        hoverinfo: 'label+percent+name',
+        hole: .4,
+        type: 'pie'
+    }];
+
+    var layout = {
+        title: 'piechart of score column',
+        annotations: [
+            {
+                font: {
+                    size: 20
+                },
+                showarrow: false,
+                text: 'score',
+                x: 0.17,
+                y: 0.5
+            },
+        ],
+        height: 400,
+        width: 600,
+        showlegend: false,
+        grid: { rows: 1, columns: 1 }
+    };
+
+    Plotly.newPlot('pieCol', data, layout);
 </script>
 
-</html>
+{% endblock %}
