@@ -7,7 +7,12 @@
 
 
 <h1>Sentiments Page</h1>
-<div id="myDiv"></div>
+<div id="myDiv" class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="barCol"></div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="pieCol"></div>
+    </div>
+</div>
 <script defer>
 
     var data = [
@@ -18,7 +23,38 @@
         }
     ];
 
-    Plotly.newPlot('myDiv', data);
+    Plotly.newPlot('barCol', data);
+
+    var data = [{
+        values: [366, 2786, 568],
+        labels: ['neutral', 'positive', 'negative'],
+        domain: { column: 0 },
+        name: 'GHG Emissions',
+        hoverinfo: 'label+percent+name',
+        hole: .4,
+        type: 'pie'
+    }];
+
+    var layout = {
+        title: 'piechart of score column',
+        annotations: [
+            {
+                font: {
+                    size: 20
+                },
+                showarrow: false,
+                text: 'score',
+                x: 0.17,
+                y: 0.5
+            },
+        ],
+        height: 400,
+        width: 600,
+        showlegend: false,
+        grid: { rows: 1, columns: 1 }
+    };
+
+    Plotly.newPlot('pieCol', data, layout);
 </script>
 
 {% endblock %}
