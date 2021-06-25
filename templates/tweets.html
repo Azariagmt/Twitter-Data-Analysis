@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container" style="margin-top: 5%;">
+    <div class="row table=responsive" style="padding: 20px;">
+        <p>
+        </p>
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" onclick="checkAll(this)"></th>
+                    <th>Source</th>
+                    <th>Polarity</th>
+                    <th>Subjectivity</th>
+                    <th>Original Text</th>
+                    <th>Lang</th>
+                    <th>Favorite count</th>
+                    <th>Retweet count</th>
+                    <th>Original Author</th>
+                    <th>Followers Count</th>
+                    <th>Friends Count</th>
+                    <th>Possibly sensitive</th>
+                    <th>Hashtags</th>
+                    <th>User mentions</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rs in tweet.items %}
+                <tr>
+                    <td><input type="checkbox" name=""></td>
+                    <td>{{ rs.source | regex_replace }}</td>
+                    <td>{{ '%0.3f' | format(rs.polarity|float) }}</td>
+                    <td>{{ '%0.3f' | format(rs.subjectivity|float) }}</td>
+                    <td>{{ rs.original_text[:40] }}...</td>
+                    <td>{{ rs.lang }}</td>
+                    <td>{{ rs.favorite_count }}</td>
+                    <td>{{ rs.retweet_count }}</td>
+                    <td>{{ rs.original_author }}</td>
+
+                    <td>{{ rs.followers_count }}</td>
+                    <td>{{ rs.friends_count }}</td>
+
+                    <td>{{ rs.possibly_sensitive }}</td>
+
+                
+                    <td><td>
+                    <td>{{ rs.location }}</td>
+
+                    {% endfor %}
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Source</th>
+                    <th>Polarity</th>
+                    <th>Subjectivity</th>
+                    <th>Original Text</th>
+                    <th>Lang</th>
+                    <th>Favorite count</th>
+                    <th>Retweet count</th>
+                    <th>Original Author</th>
+                    <th>Followers Count</th>
+                    <th>Friends Count</th>
+                    <th>Possibly sensitive</th>
+                    <th>Hashtags</th>
+                    <th>User mentions</th>
+                    <th>Location</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <ul class="pagination">
+        {% if tweet.has_prev %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('tweet', page_num=tweet.prev_num) }}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span>
+            {% endif %}
+        </li>
+
+        {% for page in tweet.iter_pages(left_edge=3, right_edge=3) %}
+        {% if page %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('tweet', page_num=page) }}">{{ page }}</a></li>
+        {% else %}
+        <li class="page-item disabled" id="example_ellipsis"><a href="#" class="page-link">…</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if tweet.has_next %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('tweet', page_num=tweet.next_num) }}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span>
+            {% endif %}
+    </ul>
+
+</div>
+<style>
+    table {
+        width: 100%;
+    }
+
+    #example_filter {
+        float: right;
+    }
+
+    #example_paginate {
+        float: right;
+    }
+
+    label {
+        display: inline-flex;
+        margin-bottom: .5rem;
+        margin-top: .5rem;
+
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        cursor: auto;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+</style>
+<script>
+    function checkAll(bx) {
+        var cbs = document.getElementsByTagName('input');
+        for (var i = 0; i < cbs.length; i++) {
+            if (cbs[i].type == 'checkbox') {
+                cbs[i].checked = bx.checked;
+            }
+        }
+    }
+</script>
+
+{% endblock %}
