@@ -53,12 +53,18 @@ class Clean_Tweets:
         self.df = df[df['lang']=='en']
         
         return df
+    def add_id(self, df:pd.DataFrame)->pd.DataFrame:
+        df.insert(0, 'id', range(0, 0 + len(df)))
+        return df
 
 if __name__ == "__main__":
     df = pd.read_csv("./processed_tweet_data.csv")
     clean_tweets = Clean_Tweets(df=df)
-    print(clean_tweets.drop_duplicate(df).head())
-    df = clean_tweets.drop_duplicate(df)
-    print(df.shape[0])
-    df = clean_tweets.remove_non_english_tweets(df)
-    print(df.shape[0])
+    clean_tweets.add_id(df=df)
+    print(df.dtypes)
+    df.to_csv('processed_tweet_data.csv', index=False)
+    # print(clean_tweets.drop_duplicate(df).head())
+    # df = clean_tweets.drop_duplicate(df)
+    # print(df.shape[0])
+    # df = clean_tweets.remove_non_english_tweets(df)
+    # print(df.shape[0])
