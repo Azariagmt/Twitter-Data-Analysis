@@ -10,7 +10,7 @@ def setup_db(app):
     database_name ='twitter-covid-data-analysis'
     default_database_path= "postgres://{}:{}@{}/{}".format('postgres', 'Familyguy12!', 'localhost:5432', database_name)
     database_path = os.getenv('DATABASE_URL', default_database_path)
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://cxcfgkxqpdvshd:1db58d68a8ea024d127f457e21ea0a6cbc676a079636d63b67735b9d4945492c@ec2-34-233-114-40.compute-1.amazonaws.com:5432/d5jv7p53sbp4b'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
