@@ -3,6 +3,7 @@ from flask_cors import CORS
 from models import setup_db, Tweet, db_drop_and_create_all
 import os
 import re
+import dashboard
 
 
 def create_app(test_config=None):
@@ -16,19 +17,18 @@ def create_app(test_config=None):
     def home():
         return render_template('index.html')
 
-
     @app.route('/tweet/<int:page_num>')
     def tweet(page_num):
-        tweet = Tweet.query.paginate(per_page=20, page=page_num, error_out=True)
+        tweet = Tweet.query.paginate(
+            per_page=20, page=page_num, error_out=True)
         return render_template('tweets.html', tweet=tweet)
-    
-    
+
     @app.route("/tweets")
     def get_tweets():
         try:
             tweets = Tweet.query.order_by(Tweet.created_at).all()
-            tweet=[]
-            tweet=[tweet.created_at for tweet in tweets]
+            tweet = []
+            tweet = [tweet.created_at for tweet in tweets]
             return jsonify(
                 {
                     "success": True,
@@ -37,6 +37,7 @@ def create_app(test_config=None):
             ), 200
         except:
             abort(500)
+
     @app.errorhandler(500)
     def server_error(error):
         return jsonify({
@@ -47,16 +48,16 @@ def create_app(test_config=None):
     return app
 
 
-
-
 # app = Flask(__name__)
 app = create_app()
+
 
 def regex_replace(text):
     return re.search("(?<=\>)(.*?)(?=\<)", text).group(0)
 
 
 app.add_template_filter(regex_replace)
+
 
 @app.route("/users")
 def users():
@@ -65,9 +66,9 @@ def users():
 
 @app.route("/tweet-sentiments")
 def sentiments():
-    return render_template('sentiments.html')
+    return render_template('sentiments.html', data=dashboard.data)
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 33507))
-    app.run(host='0.0.0.0',debug=True, port=port)
+    app.run(host='0.0.0.0', debug=True, port=port)

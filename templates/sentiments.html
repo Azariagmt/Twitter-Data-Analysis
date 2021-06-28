@@ -8,53 +8,23 @@
 
 <h1>Sentiments Page</h1>
 <div id="myDiv" class="container">
-    <div class="row">
+    <div class="row" style="margin-top: 20px;">
+        <h2>Score count graphs</h2>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="barCol"></div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="pieCol"></div>
     </div>
+    <div class="row">
+        <h2>Sentiment analysis scatter plot</h2>
+        <div class="col-xs-12 col-sm-12 col-md-10" id="sentimentCol"></div>
+    </div>
+    <div class="row">
+        <h2>Wordcloud showcasing most frequent words</h2>
+    {% include 'wordcloud.html' %}
+    </div>
 </div>
 <script defer>
-
-    var data = [
-        {
-            x:  ['neutral', 'positive', 'negative'],
-            y:  [366, 2786, 568],
-            type: 'bar'
-        }
-    ];
-
-    Plotly.newPlot('barCol', data);
-
-    var data = [{
-        values: [366, 2786, 568],
-        labels: ['neutral', 'positive', 'negative'],
-        domain: { column: 0 },
-        name: 'GHG Emissions',
-        hoverinfo: 'label+percent+name',
-        hole: .4,
-        type: 'pie'
-    }];
-
-    var layout = {
-        title: 'piechart of score column',
-        annotations: [
-            {
-                font: {
-                    size: 20
-                },
-                showarrow: false,
-                text: 'score',
-                x: 0.17,
-                y: 0.5
-            },
-        ],
-        height: 400,
-        width: 600,
-        showlegend: false,
-        grid: { rows: 1, columns: 1 }
-    };
-
-    Plotly.newPlot('pieCol', data, layout);
+    let data = {{ data | tojson }}
 </script>
+<script src="../static/js/dashboard.js" defer></script>
 
 {% endblock %}
