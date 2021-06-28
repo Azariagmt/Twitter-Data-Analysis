@@ -18,60 +18,8 @@
     </div>
 </div>
 <script defer>
-
-    // var data = [
-    //     {
-    //         x: ['neutral', 'positive', 'negative'],
-    //         y: [366, 2786, 568],
-    //         type: 'bar'
-    //     }
-    // ];
-
-    // Plotly.newPlot('barCol', data);
-
-    // var data = [{
-    //     values: [366, 2786, 568],
-    //     labels: ['neutral', 'positive', 'negative'],
-    //     domain: { column: 0 },
-    //     name: 'Score counts',
-    //     hoverinfo: 'label+percent+name',
-    //     hole: .4,
-    //     type: 'pie'
-    // }];
-
-    // var layout = {
-    //     title: 'piechart of score column',
-    //     annotations: [
-    //         {
-    //             font: {
-    //                 size: 20
-    //             },
-    //             showarrow: false,
-    //             text: 'score',
-    //             x: 0.17,
-    //             y: 0.5
-    //         },
-    //     ],
-    //     height: 400,
-    //     width: 600,
-    //     showlegend: false,
-    //     grid: { rows: 1, columns: 1 }
-    // };
-
     let data = {{ data | tojson }}
-    // console.log("HAT", {{ data | tojson }})
-    var sentimentData = {
-        x: data.sentiment_plot_X,
-        y: data.sentiment_plot_Y,
-        mode: 'markers',
-        type: 'scatter'
-    };
-
-    sentis = [sentimentData]
-    // console.log('DATA TWO', {{ data_two }})
-
-    // Plotly.newPlot('pieCol', data, layout);
-    Plotly.newPlot('sentimentCol', sentis);
 </script>
+<script src="../static/js/dashboard.js" defer></script>
 
 {% endblock %}
