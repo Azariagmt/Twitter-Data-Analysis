@@ -1,7 +1,7 @@
 # About
 
 This project aims to analyze people's sentiments on COVID-19 data collected in Africa
-via twitter using the keywords [‘COVID19 Africa’, ‘COVID19 Vaccination Africa’, ‘Sars-Cov2 Mutation Africa’] and figuring out whether or not the tweet has positive, negative or neutral sentiment. 
+via twitter using the keywords [‘COVID19 Africa’, ‘COVID19 Vaccination Africa’, ‘Sars-Cov2 Mutation Africa’] and figuring out whether or not the tweet has positive, negative or neutral sentiment.
 
 Different preprocessing tasks are done on the twitter data and a classification model is
 built to categorize between the three classes of sentiments available. Understanding the
@@ -10,15 +10,37 @@ identifying and implementing preventive or proactive measures in the times to co
 model currently achieves an accuracy of 70% and further optimization and hyperparameter
 tuning techniques will be employed to attain a better classification model.
 
+# Requirements
+
+* [ ] python3
+* [ ] git
+* [ ] C++ build tools())
+
+# Usage
+
+```
+git clone https://github.com/Azariagmt/Twitter-Data-Analysis
+```
+
+```
+cd ./Twitter-Data-Analysis
+```
+
+```
+pip install -r requirements.txt
+```
+
+```
+python3 app.py
+```
+
 # Data
 
 Data used in this project is collected using the Tweepy library, a Python library for accessing the Twitter API. The data is around 100mb of a raw twitter data dumb in JSON format. This data is collected using the following keywords: [‘COVID19 Africa’, ‘COVID19 Vaccination Africa’, ‘Sars-Cov2 Mutation Africa’]. Already fetched data is provided [here](https://github.com/10xac/Twitter-Data-Analysis) by 10 Academy.
 
 ![](https://lh5.googleusercontent.com/7nBCXBCOpqa136r1uu3cNc7YNkexHwEoX0bWgu5Izq-ThS1zcucFF0-Z00_SKDxwIoI5eru5iMtwWVv2c1e71CCQ6V4xGCfLGI3x4FyXbIGY65HirCt3YGd2R7gKEiYiL5xaCWsE)
 
-
 *Fig 1.0 classes existing in the polarity feature of our data*
-
 
 # Method
 
